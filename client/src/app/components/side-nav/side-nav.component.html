@@ -1,0 +1,12 @@
+<div class="sidenav-header effect4 text-center">
+  <img src="./assets/barrier.svg"/>
+</div>
+
+<ul class="list-unstyled">
+  <li><a [routerLinkActiveOptions]="{exact: true }" [routerLinkActive]="['active']" [routerLink]="['/home']"><i class="fa fa-home fa-fw"></i>  Home</a></li>
+  <li *ngIf="isDataUser || isSuperUser"><a [routerLinkActive]="['active']" [routerLink]="['data-quality']"><i class="fa fa-check fa-fw"></i> Data Quality</a></li>
+  <li *ngIf="isSuperUser"><a [routerLinkActive]="['active']" [routerLink]="['reference-data']"><i class="fa fa-database fa-fw"></i> Reference Data</a></li>
+  <li *ngIf="isSuperUser"><a [routerLinkActive]="['active']" [routerLink]="['rule-sets']"><i class="fa fa-list fa-fw"></i> Rule Sets</a></li>
+  <li *ngIf="isSuperUser"><a [routerLinkActive]="['active']" [routerLink]="['security']"><i class="fa fa-user-secret fa-fw"></i> Security</a></li>
+  <li><a style="cursor: pointer;" (click)="logout()"><i class="fa fa-power-off fa-fw"></i> Log Out</a></li>
+</ul>

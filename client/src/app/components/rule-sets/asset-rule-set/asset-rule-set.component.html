@@ -1,0 +1,123 @@
+<div style="margin-top: 30px;">
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#rules" aria-controls="rules" role="tab" data-toggle="tab">Rules</a></li>
+    <li role="presentation"><a href="#preview" aria-controls="preview" role="tab" data-toggle="tab">Preview</a></li>
+  </ul>
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="rules">
+      <form #form="ngForm">
+        <table class="table table-striped">
+          <thead>
+          <tr>
+            <th>High-level Barrier</th>
+            <th>Amber Start</th>
+            <th>Amber End</th>
+            <th>Updated By</th>
+            <th>Update Comments</th>
+            <th>&nbsp;</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let rule of assetRuleSet; let i = index;">
+            <td>{{ rule.Barrier.name }}</td>
+            <td><input [disabled]="i!== editingRule" #amberStart="ngModel" style="width: 100px" class="form-control" type="number" name="amber_start_{{i}}" id="amber_start_{{i}}" [(ngModel)]="rule.amber_start" [max]="rule.amber_end" min="0"/></td>
+            <td><input [disabled]="i!== editingRule" #amberEnd="ngModel" style="width: 100px" class="form-control" type="number" name="amber_end_{{i}}" id="amber_end_{{i}}" [(ngModel)]="rule.amber_end" [min]="rule.amber_start"/></td>
+            <td>{{ rule.updated_by }} on {{ rule.start_dt | date: 'y-MM-dd HH:mm:ss' }}</td>
+            <td>
+              <input [disabled]="i!== editingRule" required #updateComment="ngModel" class="form-control" name="update_comment_{{i}}" id="update_comment_{{i}}" [(ngModel)]="rule.update_comment"/>
+            </td>
+            <td>
+
+              <div class="btn-group pull-right" role="group" aria-label="actions">
+                <button [disabled]="i!== editingRule && editingRule !== -1" class="btn btn-primary" (click)="editRule(i, rule)"><i class="fa fa-fw fa-pencil"></i></button>
+                <a *ngIf="rule.version_no > 1" class="btn btn-warning" [routerLink]="['/home/rule-set/history/asset/', rule.barrier_id]"><i class="fa fa-fw fa-history"></i></a>
+                <button [disabled]="i!== editingRule" class="btn btn-danger" (click)="cancelEditRule(rule, form)"><i class="fa fa-fw fa-undo"></i></button>
+                <button class="btn btn-success" (click)="updateRule(rule)" [disabled]="(!amberStart.dirty && !amberEnd.dirty) || updateComment.invalid"><i class="fa fa-fw fa-save"></i></button>
+              </div>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </form>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="preview">
+
+      <div class="row">
+        <div class="col-sm-4 col-sm-offset-4">
+          <form>
+            <select class="form-control" [(ngModel)]="selectedAsset" name="asset" (change)="onAssetChange()">
+              <option *ngFor="let asset of assets" [ngValue]="asset" [disabled]="asset.Facilities.length<1" >
+                {{asset.name}} ({{ asset.Facilities.length }} facilities)
+              </option>
+            </select>
+          </form>
+        </div>
+      </div>
+
+      <div *ngIf="selectedAsset" class="row" style="padding-top: 30px;">
+        <div class="col-xs-12">
+          <table class="table preview-table">
+            <thead>
+            <tr>
+              <td colspan="2" class="text-center preview-td">
+                <p>COUNTS <span *ngIf="showCounts"><strong>ON</strong></span><span *ngIf="!showCounts"><strong>OFF</strong></span></p>
+                <p>
+                  <label class="switch">
+                    <input type="checkbox" [checked]="showCounts" (change)="showCounts = !showCounts"/>
+                    <span class="slider round"></span>
+                  </label>
+                </p>
+              </td>
+              <th  *ngFor="let barrier of barriers; let i = index; let odd=odd; let even=even"
+                   class="text-center preview-th" [ngClass]="{'odd': odd, 'even': even}" [attr.colspan]="barrier.BarrierTypes.length">{{ barrier.name | uppercase }}</th>
+            </tr>
+            <tr>
+              <th class="preview-th table-left-names">CATEGORY</th>
+              <th class="preview-th table-left-names">FACILITY LIST</th>
+              <ng-container  *ngFor="let barrier of barriers; let i = index; let odd=odd; let even=even">
+                <th [ngClass]="{'odd': odd, 'even': even}" *ngFor="let barrierType of barrier.BarrierTypes" class="text-center preview-th ">{{ barrierType.name | uppercase}}</th>
+              </ng-container>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let facility of selectedAsset.Facilities; let i = index;">
+              <td class="preview-td table-left-names">{{ facility.category | uppercase }}</td>
+              <td class="preview-td table-left-names">{{ facility.name | uppercase }}</td>
+
+              <ng-container  *ngFor="let barrier of barriers; let barrierIndex = index; let odd=odd; let even=even">
+                <td *ngFor="let barrierType of barrier.BarrierTypes" class="text-center preview-td" [ngClass]="{'odd': odd, 'even': even}">
+                  <p>
+
+                    <span class="fa-stack">
+                  <i class="fa fa-stack-2x" [ngClass]="{'fa-circle green': getCountForBarrierType(facility, barrierType).rag ==='G',
+            'fa-square amber': getCountForBarrierType(facility, barrierType).rag ==='A',
+            'fa-play fa-rotate-270 red': getCountForBarrierType(facility, barrierType).rag ==='R'}"></i>
+                       <i class="fa fa-check fa-inverse fa-stack-1x"></i>
+                    </span>
+
+                    <span class="fa-stack">
+                  <i class="fa fa-stack-2x" [ngClass]="{'fa-circle green': getPreviewCountForBarrierType(facility, barrierType).rag ==='G',
+            'fa-square amber': getPreviewCountForBarrierType(facility, barrierType).rag ==='A',
+            'fa-play fa-rotate-270 red': getPreviewCountForBarrierType(facility, barrierType).rag ==='R'}">
+                  </i>
+                    <i class="fa fa-eye fa-inverse fa-stack-1x"></i>
+                    </span>
+                  </p>
+
+                  <p></p>
+                  <p *ngIf="showCounts">
+                    {{ getCountForBarrierType(facility, barrierType).count }}
+                  </p>
+                </td>
+              </ng-container>
+            </tr>
+            </tbody>
+          </table>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+

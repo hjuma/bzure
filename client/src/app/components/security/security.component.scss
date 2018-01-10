@@ -1,0 +1,19 @@
+.button-spacing{
+    margin-bottom:20px;
+}
+
+
+input.ng-touched.ng-invalid
+{
+  border:1px solid #f00;
+}
+
+select.ng-touched.ng-invalid
+{
+  border:1px solid #f00;
+}
+
+
+.error{
+    color: #f00;
+}

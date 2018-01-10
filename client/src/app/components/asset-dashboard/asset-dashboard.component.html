@@ -1,0 +1,90 @@
+<div class="row">
+  <div class="col-xs-12">
+    <blockquote>
+      <h4>ASSET DASHBOARD <span *ngIf="showLatencyAlert">
+        <i style="cursor: help;" title="Some or all of the data you are viewing is more than 24 hours old" class="fa fa-warning text-danger"></i></span></h4>
+      <small>Here you can see a list of assets and their high-level status, you can drill down by clicking a facility name</small>
+    </blockquote>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xs-12">
+    <ol class="breadcrumb">
+      <li class="active">HOME</li>
+      <li *ngIf="selectedAsset" class="active">{{selectedAsset.name | uppercase }}</li>
+    </ol>
+  </div>
+</div>
+
+
+<div class="row">
+  <div class="col-sm-4 col-sm-offset-4">
+    <form>
+      <select class="form-control" [(ngModel)]="selectedAsset" name="asset" (change)="onAssetChange()">
+        <option *ngFor="let asset of assets" [ngValue]="asset" [disabled]="asset.Facilities.length<1" >
+          {{asset.name}} ({{ asset.Facilities.length }} facilities)
+        </option>
+      </select>
+    </form>
+  </div>
+</div>
+<div *ngIf="!selectedAsset" class="row" style="padding-top: 30px;">
+  <div class="col-xs-12 text-center">
+    <p>No asset current selected</p>
+  </div>
+</div>
+
+<div *ngIf="selectedAsset" class="row" style="padding-top: 30px;">
+  <div class="col-xs-12">
+    <table class="table">
+      <thead>
+      <tr>
+        <td colspan="2" class="text-center">
+          <p>COUNTS <span *ngIf="showCounts"><strong>ON</strong></span><span *ngIf="!showCounts"><strong>OFF</strong></span></p>
+          <p>
+          <label class="switch">
+            <input type="checkbox" [checked]="showCounts" (change)="showCounts = !showCounts"/>
+            <span class="slider round"></span>
+          </label>
+          </p>
+        </td>
+        <th  *ngFor="let barrier of barriers; let i = index; let odd=odd; let even=even"
+             class="text-center" [ngClass]="{'odd': odd, 'even': even}"  style="cursor: help;" [attr.title]="barrier.description" [attr.colspan]="barrier.BarrierTypes.length">{{ barrier.name | uppercase }}</th>
+      </tr>
+      <tr>
+        <th class="table-left-names">CATEGORY</th>
+        <th class="table-left-names">FACILITY LIST</th>
+        <ng-container  *ngFor="let barrier of barriers; let i = index; let odd=odd; let even=even">
+          <th [ngClass]="{'odd': odd, 'even': even}" *ngFor="let barrierType of barrier.BarrierTypes" style="cursor: help;" [attr.title]="barrierType.description" class="text-center">{{ barrierType.name | uppercase}}</th>
+        </ng-container>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let facility of selectedAsset.Facilities; let i = index;">
+        <td class="table-left-names">{{ facility.category | uppercase }}</td>
+        <td class="table-left-names"><a [routerLink]="['facility', facility.id]">
+          {{ facility.name | uppercase }}&nbsp;
+          <span *ngIf="hasOldData(facility)">
+            <i style="cursor: help;" title="The data you are viewing is more than 24 hours old" class="fa fa-warning text-danger"></i>
+          </span>
+
+        </a>
+        </td>
+
+        <ng-container  *ngFor="let barrier of barriers; let barrierIndex = index; let odd=odd; let even=even">
+          <td *ngFor="let barrierType of barrier.BarrierTypes" class="text-center" [ngClass]="{'odd': odd, 'even': even}">
+            <p><i class="fa fa-2x fa-fw" [ngClass]="{'fa-circle green': getCountForBarrierType(facility, barrierType).rag ==='G',
+            'fa-square amber': getCountForBarrierType(facility, barrierType).rag ==='A',
+            'fa-play fa-rotate-270 red': getCountForBarrierType(facility, barrierType).rag ==='R'}"></i></p>
+            <p *ngIf="showCounts">
+              {{ getCountForBarrierType(facility, barrierType).count }}
+            </p>
+          </td>
+        </ng-container>
+      </tr>
+      </tbody>
+    </table>
+
+  </div>
+</div>

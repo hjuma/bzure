@@ -1,0 +1,82 @@
+<div class="row">
+  <div class="col-xs-12">
+    <blockquote>
+      <h4>FACILITY DASHBOARD
+        <span *ngIf="showLatencyAlert">
+        <i style="cursor: help;" title="Some or all of the data you are viewing is more than 24 hours old" class="fa fa-warning text-danger"></i></span>
+      </h4>
+      <small>Here you can see the status of the selected facility. You can click on a status icon to display the work orders that fall into
+        each category. Items with a zero count cannot be expanded.</small>
+    </blockquote>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12">
+    <ol class="breadcrumb">
+      <li><a [routerLink]="['/home']" [queryParams]="{assetId : selectedFacility?.asset_id }">{{ selectedFacility?.Asset.name | uppercase }}</a></li>
+      <li class="active">{{ selectedFacility?.name | uppercase }}</li>
+    </ol>
+  </div>
+</div>
+
+<div class="row" style="padding-top: 30px;">
+  <div class="col-xs-12">
+
+    <table class="table">
+      <thead>
+      <tr>
+        <td colspan="2" class="text-center">
+          <p>COUNTS <span *ngIf="showCounts"><strong>ON</strong></span><span *ngIf="!showCounts"><strong>OFF</strong></span></p>
+          <p>
+            <label class="switch">
+              <input type="checkbox" [checked]="showCounts" (change)="showCounts = !showCounts"/>
+              <span class="slider round"></span>
+            </label>
+          </p>
+        </td>
+        <th  *ngFor="let barrier of barriers; let i = index; let odd=odd; let even=even" style="cursor: help;" [attr.title]="barrier.description"
+             class="text-center even" [attr.colspan]="barrier.BarrierTypes.length">{{ barrier.name | uppercase }}</th>
+      </tr>
+      <tr>
+        <th class="table-left-names">BARRIER ELEMENT</th>
+        <th class="table-left-names">BARRIER SUB-SET</th>
+        <ng-container  *ngFor="let barrier of barriers; let i = index; let odd=odd; let even=even">
+          <th *ngFor="let barrierType of barrier.BarrierTypes"  style="cursor: help;" [attr.title]="barrierType.description" class="text-center even">{{ barrierType.name | uppercase}}</th>
+        </ng-container>
+      </tr>
+      </thead>
+      <tbody>
+      <ng-container *ngFor="let barrierElement of barrierElements; let element=index">
+        <tr *ngFor="let metric of barrierElement.BarrierMetrics; let metricIndex=index">
+          <td *ngIf="metricIndex===0" [attr.rowspan]="barrierElement.BarrierMetrics.length" class="table-left-names">{{ barrierElement.name }}</td>
+          <td class="table-left-names"  style="cursor: help;" [attr.title]="metric.description">{{ metric.name | uppercase}}&nbsp;
+          <span *ngIf="hasOldData(metric)"><i title="The data you are viewing is more than 24 hours old" class="fa fa-warning text-danger"></i></span>
+          </td>
+          <ng-container *ngIf="metric.use_barriers">
+            <ng-container  *ngFor="let barrier of barriers; let barrierIndex = index; let odd=odd; let even=even">
+              <td *ngFor="let barrierType of barrier.BarrierTypes" class="text-center" [ngClass]="{'odd': getCountForBarrierMetric(metric, barrierType).rag === '', 'even': getCountForBarrierMetric(metric, barrierType).rag !== ''}">
+                <p *ngIf="getCountForBarrierMetric(metric, barrierType).count>0">
+                  <i style="cursor: pointer" (click)="onRagClick(metric, barrierType, getCountForBarrierMetric(metric, barrierType).rag)" class="fa fa-2x fa-fw" [ngClass]="{'fa-circle green': getCountForBarrierMetric(metric, barrierType).rag ==='G',
+            'fa-square amber': getCountForBarrierMetric(metric, barrierType).rag ==='A',
+            'fa-play fa-rotate-270 red': getCountForBarrierMetric(metric, barrierType).rag ==='R'}"></i>
+                </p>
+                <p *ngIf="getCountForBarrierMetric(metric, barrierType).count===0"><i class="fa fa-2x fa-fw" [ngClass]="{'fa-circle green': getCountForBarrierMetric(metric, barrierType).rag ==='G',
+            'fa-square amber': getCountForBarrierMetric(metric, barrierType).rag ==='A',
+            'fa-play fa-rotate-270 red': getCountForBarrierMetric(metric, barrierType).rag ==='R'}"></i></p>
+                <p *ngIf="showCounts">
+                  {{ getCountForBarrierMetric(metric, barrierType).count }}
+                </p>
+
+              </td>
+            </ng-container>
+          </ng-container>
+          <ng-container *ngIf="!metric.use_barriers">
+            <td *ngIf="getCountForNonBarrierMetric(metric)<1" class="even text-center" [attr.colspan]="getColSpan()">{{getCountForNonBarrierMetric(metric)}}</td>
+            <td *ngIf="getCountForNonBarrierMetric(metric)>0" class="even text-center" [attr.colspan]="getColSpan()"><a style="cursor: pointer;" (click)="onNonBarrierCountClick(metric, barrierType)">{{getCountForNonBarrierMetric(metric)}}</a></td>
+          </ng-container>
+        </tr>
+      </ng-container>
+      </tbody>
+    </table>
+  </div>
+</div>

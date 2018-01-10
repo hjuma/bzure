@@ -1,0 +1,102 @@
+<form [formGroup]="barrierTypeForm">
+  <div class="container pull-left" style="margin-top:20px">
+    <table class="table table-striped table-responsive table-bordered ">
+      <thead>
+        <tr>
+          <th class="text-center vertical-align">Actions</th>
+          <th class="text-center vertical-align" *ngFor="let header of headers; let i = index;">
+            <a href="javascript:void(0)" title="{{header.name}}" (click)="sort(header, i)">{{header.name}}
+          <i *ngIf="header.isAsc" class="fa fa-sort-asc pull-right" aria-hidden="true"></i>
+          <i *ngIf="header.isDsc" class="fa fa-sort-desc pull-right" aria-hidden="true"></i></a><br/>
+          </th>
+        </tr>
+        <tr>
+          <th class="text-center vertical-align"><i class="fa fa-plus-circle" aria-hidden="true" style="cursor:pointer" (click)="add()"></i></th>
+          <th *ngFor="let header of headers; let in = index;"><div *ngIf="header.filter"><input class="form-control input-width" type="text" formControlName="columnFilter" placeholder="{{header.name}}"
+            [(ngModel)]="header.columnFilter" (keyup)="updateFilter(in, header.columnFilter)"/></div></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of (pagedRows | TableSort: columnFilter:chosenIndex:headers:isNew | OrderBy: isAscending:columnName:columnIndex);let i = index;let first=first;let last=last;">
+          <td class="text-center vertical-align">
+            <span id="edit" class="vertical-align fa fa-pencil icon-spacing" *ngIf="!row.isEdit" (click)="edit(row)"></span>
+            <span id="save" class="vertical-align fa fa-check icon-spacing" *ngIf="row.isEdit" (click)="save(row)"></span>
+            <span id="cancel" class="vertical-align fa fa-times icon-spacing" *ngIf="row.isEdit" (click)="cancel(row)"></span>
+          </td>
+          <td>
+            <div *ngIf="!row.isEdit">{{row.values.Asset.name}}</div>
+            <div *ngIf="row.isEdit">
+              <select class="form-control dropdown-toggle" #assetName (change)="changeAsset($event)" [(ngModel)]="barrierType.asset_id" formControlName="asset"
+                placeholder="Asset Name">
+                        <option value="" selected>Select Asset</option>
+                        <option *ngFor="let asset of assets" [value]="asset.id">{{asset.name}}</option>
+                    </select>
+              <div *ngIf="!this.barrierTypeForm.controls['asset'].valid && this.barrierTypeForm.controls['asset'].touched && this.barrierTypeForm.controls['asset'].hasError('required')"
+                class="error">Asset Name is required.
+              </div>
+            </div>
+          </td>
+          <td>
+            <div *ngIf="!row.isEdit">{{row.values.Barrier.name}}</div>
+            <div *ngIf="row.isEdit">
+              <select class="form-control dropdown-toggle" #barrier (change)="changeBarrier($event)" [(ngModel)]="barrierType.barrier_id"
+                formControlName="barrier" placeholder="Barrier Name">
+                        <option value="" selected>Select Barrier</option>
+                        <option *ngFor="let barrier of barriers" [value]="barrier.id">{{barrier.name}}</option>
+                    </select>
+              <div *ngIf="!this.barrierTypeForm.controls['barrier'].valid && this.barrierTypeForm.controls['barrier'].touched && this.barrierTypeForm.controls['barrier'].hasError('required')"
+                class="error">Barrier Name is required.
+              </div>
+            </div>
+          </td>
+          <td>
+            <div *ngIf="!row.isEdit">{{row.values.name}}</div>
+            <div *ngIf="row.isEdit">
+              <input class='form-control' formControlName="name" [(ngModel)]="barrierType.name" type="text" placeholder="Name" required>
+              <div *ngIf="!this.barrierTypeForm.controls['name'].valid && this.barrierTypeForm.controls['name'].touched && this.barrierTypeForm.controls['name'].hasError('required')"
+                class="error">Barrier Type Name is required.
+              </div>
+            </div>
+          </td>
+          <td>
+            <div *ngIf="!row.isEdit">{{row.values.description}}</div>
+            <div *ngIf="row.isEdit">
+              <input class='form-control' formControlName="description" [(ngModel)]="barrierType.description" type="text" placeholder="Description">
+              <div *ngIf="!this.barrierTypeForm.controls['description'].valid && this.barrierTypeForm.controls['description'].touched && this.barrierTypeForm.controls['description'].hasError('required')"
+                class="error">Description is required.
+              </div>
+            </div>
+          </td>
+          <!-- 
+          <td>
+            <div class="text-center">
+              <span class="fa fa-long-arrow-up icon-spacing" aria-hidden="true" (click)="moveUp(i)" *ngIf="!first"></span>
+              <span class="fa fa-long-arrow-down icon-spacing" aria-hidden="true" (click)="moveDown(i)" *ngIf="!last"></span>
+            </div>
+          </td>
+          -->
+        </tr>
+      </tbody>
+    </table>
+    <!-- pagination -->
+    <div id="pagination">
+      <ul *ngIf="pagination.pages && pagination.pages.length" class="pagination">
+        <li [ngClass]="{disabled:pagination.currentPage === 1}">
+          <a (click)="setPage(1)">First</a>
+        </li>
+        <li [ngClass]="{disabled:pagination.currentPage === 1}">
+          <a (click)="setPage(pagination.currentPage - 1)">Previous</a>
+        </li>
+        <li *ngFor="let page of pagination.pages" [ngClass]="{active:pagination.currentPage === page}">
+          <a (click)="setPage(page)">{{page}}</a>
+        </li>
+        <li [ngClass]="{disabled:pagination.currentPage === pagination.totalPages}">
+          <a (click)="setPage(pagination.currentPage + 1)">Next</a>
+        </li>
+        <li [ngClass]="{disabled:pagination.currentPage === pagination.totalPages}">
+          <a (click)="setPage(pagination.totalPages)">Last</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</form>

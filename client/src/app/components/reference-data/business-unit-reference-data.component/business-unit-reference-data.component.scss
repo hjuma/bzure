@@ -1,0 +1,30 @@
+.icon-spacing{
+    padding-right:5px;
+    padding-left:5px;
+}
+
+input.ng-touched.ng-invalid
+{
+  border:1px solid #f00;
+}
+
+select.ng-touched.ng-invalid
+{
+  border:1px solid #f00;
+}
+
+.error{
+    color: #f00;
+}
+
+#pagination{
+  text-align: center;
+}
+
+.pagination > li > a:hover, .pagination > li > a:focus {
+  cursor: pointer;
+}
+
+.pagination > .disabled > a:hover, .pagination > .disabled > a:focus {
+  cursor: not-allowed;
+}

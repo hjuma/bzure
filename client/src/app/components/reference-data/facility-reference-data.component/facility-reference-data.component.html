@@ -1,0 +1,99 @@
+<form [formGroup]="facilityForm">
+  <div class="container pull-left" style="margin-top:20px">
+    <table class="table table-striped table-responsive table-bordered ">
+      <thead>
+        <tr>
+          <th class="text-center vertical-align">Actions</th>
+          <th class="text-center vertical-align" *ngFor="let header of headers; let i = index;">
+            <a href="javascript:void(0)" title="{{header.name}}" (click)="sort(header, i)">{{header.name}}
+              <i *ngIf="header.isAsc" class="fa fa-sort-asc pull-right" aria-hidden="true"></i>
+              <i *ngIf="header.isDsc" class="fa fa-sort-desc pull-right" aria-hidden="true"></i>
+            </a>
+            <br/>
+          </th>
+        </tr>
+        <tr>
+          <th class="text-center vertical-align">
+            <i class="fa fa-plus-circle" aria-hidden="true" style="cursor:pointer" (click)="add()"></i>
+          </th>
+          <th *ngFor="let header of headers; let in = index;">
+            <input class="form-control input-width" type="text" formControlName="columnFilter" placeholder="{{header.name}}" [(ngModel)]="header.columnFilter"
+              (keyup)="updateFilter(in, header.columnFilter)" />
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of (pagedRows | TableSort: columnFilter:chosenIndex:headers:isNew | OrderBy: isAscending:columnName:columnIndex);let i = index">
+          <td class="text-center vertical-align" style="cursor:pointer">
+            <span id="edit" class="vertical-align fa fa-pencil icon-spacing" *ngIf="!row.isEdit" (click)="edit(row)"></span>
+            <span id="save" class="vertical-align fa fa-check icon-spacing" *ngIf="row.isEdit" (click)="save(row)"></span>
+            <span id="cancel" class="vertical-align fa fa-times icon-spacing" *ngIf="row.isEdit" (click)="cancel(row)"></span>
+          </td>
+          <td>
+            <div *ngIf="!row.isEdit">{{row.values.code}}</div>
+            <div *ngIf="row.isEdit">
+              <input class='form-control' formControlName="code" [(ngModel)]="facility.code" type="text" placeholder="code" required>
+              <div *ngIf="!this.facilityForm.controls['code'].valid && this.facilityForm.controls['code'].touched && this.facilityForm.controls['code'].hasError('required')"
+                class="error">Facility Code is required.
+              </div>
+            </div>
+          </td>
+          <td>
+            <div *ngIf="!row.isEdit">{{row.values.Asset.name}}</div>
+            <div *ngIf="row.isEdit">
+              <select class="form-control dropdown-toggle" #assetName (change)="changeAsset($event)" [(ngModel)]="facility.asset_id" formControlName="asset"
+                placeholder="Asset Name">
+                <option value="" selected>Select Asset</option>
+                <option *ngFor="let asset of assets" [value]="asset.id">{{asset.name}}</option>
+              </select>
+              <div *ngIf="!this.facilityForm.controls['asset'].valid && this.facilityForm.controls['asset'].touched && this.facilityForm.controls['asset'].hasError('required')"
+                class="error">Asset Name is required.
+              </div>
+            </div>
+          </td>
+          <td>
+            <div *ngIf="!row.isEdit">{{row.values.name}}</div>
+            <div *ngIf="row.isEdit">
+              <input class='form-control' formControlName="name" [(ngModel)]="facility.name" type="text" placeholder="Facility Name" required>
+              <div *ngIf="!this.facilityForm.controls['name'].valid && this.facilityForm.controls['name'].touched && this.facilityForm.controls['name'].hasError('required')"
+                class="error">Facility Name is required.
+              </div>
+            </div>
+          </td>
+          <td>
+            <div *ngIf="!row.isEdit">{{row.values.category}}</div>
+            <div *ngIf="row.isEdit">
+              <select class="form-control dropdown-toggle" #category [(ngModel)]="facility.category" formControlName="category" placeholder="category">
+                <option value="" selected>Category</option>
+                <option *ngFor="let category of categories" [value]="category">{{category}}</option>
+              </select>
+              <div *ngIf="!this.facilityForm.controls['category'].valid && this.facilityForm.controls['category'].touched && this.facilityForm.controls['category'].hasError('required')"
+                class="error">Category is required.
+              </div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <!-- pagination -->
+    <div id="pagination">
+      <ul *ngIf="pagination.pages && pagination.pages.length" class="pagination">
+        <li [ngClass]="{disabled:pagination.currentPage === 1}">
+          <a (click)="setPage(1)">First</a>
+        </li>
+        <li [ngClass]="{disabled:pagination.currentPage === 1}">
+          <a (click)="setPage(pagination.currentPage - 1)">Previous</a>
+        </li>
+        <li *ngFor="let page of pagination.pages" [ngClass]="{active:pagination.currentPage === page}">
+          <a (click)="setPage(page)">{{page}}</a>
+        </li>
+        <li [ngClass]="{disabled:pagination.currentPage === pagination.totalPages}">
+          <a (click)="setPage(pagination.currentPage + 1)">Next</a>
+        </li>
+        <li [ngClass]="{disabled:pagination.currentPage === pagination.totalPages}">
+          <a (click)="setPage(pagination.totalPages)">Last</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</form>

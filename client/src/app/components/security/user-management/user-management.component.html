@@ -1,0 +1,110 @@
+<div class="row">
+  <div class="col-xs-12">
+    <blockquote>
+      <span class="pull-right">
+        <button (click)="discardChanges()" class="btn btn-danger button-spacing" style="margin-left: 17px;margin-top:20px;" [disabled]="!userForm.dirty">Undo Changes</button>
+      </span>
+      <h4 *ngIf="isNew">ADD USER</h4>
+      <h4 *ngIf="!isNew">EDIT USER</h4>
+
+      <small *ngIf="isNew">Here you can add a new user to the system</small>
+      <small *ngIf="!isNew">Here you can edit an existing user, users cannot be deleted but can be set to inactive if no longer required</small>
+    </blockquote>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12">
+    <ol class="breadcrumb">
+      <li><a [routerLink]="['/']">HOME</a></li>
+      <li><a [routerLink]="['/home/security']">USER ACCESS MANAGEMENT</a></li>
+      <li *ngIf="isNew" class="active">ADD NEW USER</li>
+      <li *ngIf="!isNew" class="active">{{user.first_name | uppercase}} {{user.last_name |uppercase}}</li>
+    </ol>
+  </div>
+</div>
+
+<form [formGroup]="userForm" (ngSubmit)="saveUser(userForm)">
+  <div class="container pull-left">
+    <div class="form-group">
+      <div class="col-xs-12">
+        <div class="col-xs-2">
+          <input class='form-control' [(ngModel)]="user.username" formControlName="username" type="text" placeholder="Username"
+                 required>
+          <div *ngIf="!userForm.controls['username'].valid && userForm.controls['username'].touched && userForm.controls['username'].hasError('required')"
+               class="error">Username is required.
+          </div>
+        </div>
+        <div class="col-xs-2"><input class='form-control' [(ngModel)]="user.first_name" formControlName="firstname" type="text" placeholder="First Name"
+                                     required>
+          <div *ngIf="!userForm.controls['firstname'].valid && userForm.controls['firstname'].touched && userForm.controls['firstname'].hasError('required')"
+               class="error">First name is required.
+          </div>
+        </div>
+
+        <div class="col-xs-2"><input class='form-control' [(ngModel)]="user.last_name" formControlName="lastname" type="text" placeholder="Last Name"
+                                     required>
+          <div *ngIf="!userForm.controls['lastname'].valid && userForm.controls['lastname'].touched && userForm.controls['lastname'].hasError('required')"
+               class="error">Last name is required.
+          </div>
+        </div>
+        <div class="col-xs-2"><input class='form-control' [(ngModel)]="user.email" formControlName="email" type="text" placeholder="Email"
+                                     required>
+          <div *ngIf="!userForm.controls['email'].valid && userForm.controls['email'].touched && userForm.controls['email'].hasError('required')"
+               class="error">Email is required.
+          </div>
+          <div *ngIf="!userForm.controls['email'].valid && userForm.controls['email'].touched && userForm.controls['email'].hasError('email')"
+               class="error">Please enter a valid email.
+          </div>
+        </div>
+        <div class="dropdown col-xs-2">
+          <select class="form-control dropdown-toggle col-xs-12" #role (change)="changeRoleDetails($event)" [(ngModel)]="user.role_id"
+                  formControlName="role" placeholder="Role">
+            <option value="" selected disabled>Role</option>
+            <option *ngFor="let role of roles" [value]="role.id">{{role.name}}</option>
+          </select>
+          <div *ngIf="!userForm.controls['role'].valid && userForm.controls['role'].touched && userForm.controls['role'].hasError('required')"
+               class="error">Role is required.
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12" style="margin-top:10px">
+        <div *ngIf="isNew">
+          <div class="col-xs-3"><input class='form-control' [(ngModel)]="user.password" formControlName="password" type="password" placeholder="password"
+                                       [required]="isNew">
+            <div *ngIf="!userForm.controls['password'].valid && userForm.controls['password'].touched && userForm.controls['password'].hasError('required')"
+                 class="error">Password is required.
+            </div>
+          </div>
+          <div class="col-xs-3"><input class='form-control' [(ngModel)]="user.confirm_password" formControlName="confirmPassword" type="password"
+                                       placeholder="confirm password" [required]="isNew">
+            <div *ngIf="!userForm.controls['confirmPassword'].valid && userForm.controls['confirmPassword'].touched && userForm.controls['confirmPassword'].hasError('required')"
+                 class="error">Confirm password is required.
+            </div>
+            <div *ngIf="!userForm.controls['confirmPassword'].valid && userForm.controls['confirmPassword'].touched && userForm.controls['confirmPassword'].hasError('MatchPassword')"
+                 class="error">Both the passwords should be same.
+            </div>
+          </div>
+        </div>
+        <div class="dropdown col-xs-3">
+          <select class="form-control dropdown-toggle col-xs-12" #businessUnit (change)="changeBusinessUnit($event)" [(ngModel)]="user.business_unit_id"
+                  formControlName="businessunit" placeholder="businessunit">
+            <option value="" selected disabled>Business Unit</option>
+            <option *ngFor="let businessUnit of businessUnits" [value]="businessUnit.id">{{businessUnit.name}}</option>
+          </select>
+          <div *ngIf="!userForm.controls['businessunit'].valid && userForm.controls['businessunit'].touched && userForm.controls['businessunit'].hasError('required')"
+               class="error">Business Unit is required.
+          </div>
+        </div>
+        <div class="form-check col-xs-1">
+          <label class="form-check-label">
+            <input class="form-check-input" ngDefaultControl type="checkbox" [checked]="status" (change)="onStatusChange($event)"  [value]="status" formControlName="status"> Active
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="col-xs-2">
+      <button class="btn btn-success button-spacing" style="margin-left: 17px;margin-top:20px;" [disabled]="userForm.invalid">Save</button>
+    </div>
+  </div>
+
+</form>

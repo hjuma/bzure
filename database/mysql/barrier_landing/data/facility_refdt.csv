@@ -1,0 +1,23 @@
+id;code;asset_id;name;category;created_at;updated_at
+-1;UNK;-1;Unknown;Unknown;2017-09-19 09:09:55;2017-09-19 09:09:55
+1;BRT1;1;Rivers LAKE Terminal;Onshore;2017-09-19 09:09:55;2017-09-19 09:09:55
+2;G310;1;DPPA;Offshore;2017-09-19 09:09:55;2017-09-19 09:09:55
+3;MAP1;1;Accommodation Platform;Offshore;2017-09-19 09:09:55;2017-09-19 09:09:55
+4;MBTF;1;Condensate Tank Farm;Onshore;2017-09-19 09:09:55;2017-09-19 09:09:55
+5;MCP1;1;Central Processing Platform;Offshore;2017-09-19 09:09:55;2017-09-19 09:09:55
+6;MDP1;1;DP1;Offshore;2017-09-19 09:09:55;2017-09-19 09:09:55
+7;MDP3;1;DP3;Offshore;2017-09-19 09:09:55;2017-09-19 09:09:55
+8;MDP4;1;DP4;Offshore;2017-09-19 09:09:55;2017-09-19 09:09:55
+9;MDP6;1;DP6;Offshore;2017-09-19 09:09:55;2017-09-19 09:09:55
+10;MDP8;1;DP8;Offshore;2017-09-19 09:09:55;2017-09-19 09:09:55
+11;MNT1;1;North Terminal;Onshore;2017-09-19 09:09:55;2017-09-19 09:09:55
+12;MST1;1;South DEWI Terminal;Onshore;2017-09-19 09:09:55;2017-09-19 09:09:55
+13;CHIS;2;Chiswick - Platform (unmanned);Offshore;2017-09-19 09:09:55;2017-09-19 09:09:55
+14;F3FA;2;F3FA - Platform (unmanned);Offshore;2017-09-19 09:09:55;2017-09-19 09:09:55
+15;GROV;2;Grove - Platform (unmanned);Offshore;2017-09-19 09:09:55;2017-09-19 09:09:55
+16;GROW;2;Grove West - Sub Sea Development;Offshore;2017-09-19 09:09:55;2017-09-19 09:09:55
+17;MJ6A;2;MJ6A - Platform (manned);Offshore;2017-09-19 09:09:55;2017-09-19 09:09:55
+18;MKEW;2;KEW - Sub Sea Development;Offshore;2017-09-19 09:09:55;2017-09-19 09:09:55
+19;MST1;2;ST1 - Platform (unmanned);Offshore;2017-09-19 09:09:55;2017-09-19 09:09:55
+20;STAM;2;Stamford - Sub Sea Development;Offshore;2017-09-19 09:09:55;2017-09-19 09:09:55
+21;WIND;2;Windermere - Platform (unmanned);Offshore;2017-09-19 09:09:55;2017-09-19 09:09:55

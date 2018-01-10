@@ -1,0 +1,39 @@
+<div class="row">
+  <div class="col-xs-12">
+    <blockquote>
+      <h4>FACILITY DASHBOARD - WORK ORDER DRILL DOWN</h4>
+      <small>Here you can see a list of all work orders that contribute to the status you chose to expand by clicking its icon</small>
+    </blockquote>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xs-12">
+    <ol class="breadcrumb">
+      <li *ngIf="selectedFacility"><a [routerLink]="['/home']">{{selectedFacility?.Asset.name | uppercase}}</a></li>
+      <li *ngIf="selectedFacility"><a [routerLink]="['/home/facility', selectedFacility.id]">{{selectedFacility?.name | uppercase}}</a></li>
+      <li *ngIf="workOrderData && barrier">{{ barrier | uppercase}}</li>
+      <li *ngIf="workOrderData && barrierType">{{ barrierType | uppercase}}</li>
+      <li *ngIf="workOrderData && barrierMetric">{{ barrierMetric | uppercase}}</li>
+      <li *ngIf="workOrderData && ragStatus">{{ ragStatus | uppercase}}</li>
+   </ol>
+  </div>
+</div>
+<div class="row" style="padding-top: 30px;">
+  <div class="col-xs-12">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th *ngFor="let field of displayFields">{{field.display_name}}</th>
+
+        </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let workOrder of workOrderData; let i=index;">
+        <td *ngFor="let field of displayFields"> {{ workOrder[field.field_name]}}</td>
+      </tr>
+      </tbody>
+    </table>
+
+  </div>
+</div>

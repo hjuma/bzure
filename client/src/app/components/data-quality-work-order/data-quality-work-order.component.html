@@ -1,0 +1,37 @@
+<div class="row">
+  <div class="col-xs-12">
+    <blockquote>
+      <h4>DATA QUALITY DASHBOARD - WORK ORDER DRILL DOWN</h4>
+      <small>Here you can see a list of all work orders that belong to incorrect assignment you can choose to expand by clicking its icon</small>
+    </blockquote>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xs-12">
+    <ol class="breadcrumb">
+      <li *ngIf="selectedFacility"><a [routerLink]="['/home']">{{selectedFacility?.Asset.name | uppercase}}</a></li>
+      <li *ngIf="selectedFacility"><a [routerLink]="['/home/data-quality']" [queryParams]="{ facilityId : selectedFacility.id, assetId : selectedFacility.asset_id }">{{selectedFacility?.name | uppercase}}</a></li>
+      <li *ngIf="workOrderData">{{ workOrderData[0]['BarrierType.Barrier.name'] | uppercase}}</li>
+      <li *ngIf="workOrderData">{{ workOrderData[0]['BarrierType.name'] | uppercase}}</li>
+      <li *ngIf="workOrderData">{{ workOrderData[0]['BarrierMetric.name'] | uppercase}}</li>
+    </ol>
+  </div>
+</div>
+<div class="row" style="padding-top: 30px;">
+  <div class="col-xs-12">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th *ngFor="let field of displayFields">{{field.display_name}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let workOrder of workOrderData; let i=index;">
+          <td *ngFor="let field of displayFields"> {{ workOrder[field.field_name]}}</td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+</div>

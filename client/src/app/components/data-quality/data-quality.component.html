@@ -1,0 +1,89 @@
+<div class="row">
+  <div class="col-xs-12">
+    <blockquote>
+      <h4>DATA QUALITY DASHBOARD</h4>
+      <small>Here you can see the status of the selected facility. You can click on a barrier sub-set column to display the work orders that fall into each category. Items with a zero count cannot be expanded.</small>
+      <br/>
+      <small><strong>Unassigned Column</strong> = Work orders that do not have a <strong>FLOC</strong> to <strong>performance standard</strong> mapping configured and can't be assigned to a barrier</small>
+      <small><strong>Incorrect Assignment Row</strong> = Work orders that can be assigned to a <strong>barrier</strong> but don't fall into any of the configured <strong>barrier subsets</strong> (may be because they have been incorrectly assigned as SCEs)</small>
+    </blockquote>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12">
+    <ol class="breadcrumb">
+      <li><a [routerLink]="['/']">HOME</a></li>
+      <li class="active">DATA QUALITY DASHBOARD</li>
+    </ol>
+  </div>
+</div>
+<div class="row">
+  <form>
+    <div class="col-sm-4 col-sm-offset-4">
+      <select class="form-control" [(ngModel)]="selectedAsset" name="asset" (change)="onAssetChange()">
+        <option *ngFor="let asset of assets" [ngValue]="asset" [disabled]="asset.Facilities.length<1" >
+          {{asset.name}} ({{ asset.Facilities.length }} facilities)
+        </option>
+      </select>
+      <div *ngIf="!selectedAsset" class="row" style="padding-top: 30px;">
+        <div class="col-xs-12 text-center">
+          <p>No asset current selected</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-4 col-sm-offset-4" style="margin-top: 30px;">
+      <select class="form-control" [(ngModel)]="selectedFacility" name="facility" (change)="onFacilityChange()">
+          <option *ngFor="let facility of facilities" [ngValue]="facility" [disabled]="facilities.length<1" >
+            {{facility.name}}
+          </option>
+        </select>
+      <div *ngIf="!selectedAsset" class="row" style="padding-top: 30px;">
+        <div class="col-xs-12 text-center">
+          <p>No Facility selected</p>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div class="row" style="padding-top: 30px;">
+  <div class="col-xs-12">
+    <table class="table">
+      <thead>
+        <tr>
+          <td colspan="3" class="text-center">
+          </td>
+          <th *ngFor="let barrier of barriers; let i = index; let odd=odd; let even=even"
+              class="text-center" [ngClass]="{'odd': odd, 'even': even}"
+              [attr.title]="barrier.description"
+              style="cursor: help;"
+              [attr.colspan]="barrier.BarrierTypes.length">{{ barrier.name | uppercase }}</th>
+        </tr>
+        <tr>
+          <th class="table-left-names">ASSET</th>
+          <th class="table-left-names">FACILITY</th>
+          <th class="table-left-names">BARRIER SUB-SET</th>
+          <ng-container *ngFor="let barrier of barriers; let i = index; let odd=odd; let even=even">
+            <th [ngClass]="{'odd': odd, 'even': even}" *ngFor="let barrierType of barrier.BarrierTypes" class="text-center"
+            [attr.title]="barrierType.description" style="cursor: help;">{{ barrierType.name | uppercase}}</th>
+          </ng-container>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let barrierElement of barrierElements; let element=index">
+          <tr *ngFor="let metric of barrierElement.BarrierMetrics; let metricIndex=index">
+            <td *ngIf="metricIndex===0" [attr.rowspan]="barrierElement.BarrierMetrics.length" class="table-left-names">{{ selectedAsset.name }}</td>
+            <td *ngIf="metricIndex===0" [attr.rowspan]="barrierElement.BarrierMetrics.length" class="table-left-names">{{ selectedFacility.name | uppercase }}</td>
+            <td class="table-left-names" [attr.title]="metric.description" style="cursor: help;">{{ metric.name | uppercase }}</td>
+            <ng-container *ngFor="let barrier of barriers; let barrierIndex = index;let odd=odd;let even=even">
+              <td *ngFor="let barrierType of barrier.BarrierTypes" class="text-center" [ngClass]="{'even': getCountForBarrierMetric(metric, barrierType).count > 0,'pointer': getCountForBarrierMetric(metric, barrierType).count > 0,'odd': getCountForBarrierMetric(metric, barrierType).count === undefined}">
+                <p *ngIf="getCountForBarrierMetric(metric, barrierType).count > 0"><a title="{{getCountForBarrierMetric(metric, barrierType).tooltip}}" (click)="onClick(metric, barrierType)">{{ getCountForBarrierMetric(metric, barrierType).count }}</a></p>
+                <p *ngIf="getCountForBarrierMetric(metric, barrierType).count === undefined">{{ getCountForBarrierMetric(metric, barrierType).count }}</p>
+              </td>
+            </ng-container>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+  </div>
+</div>

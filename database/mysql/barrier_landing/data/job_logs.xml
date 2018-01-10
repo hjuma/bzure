@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema>
+    <column comment="" default="" key="false" label="moment" length="0"
+        nullable="true" originalDbColumnName="moment"
+        originalLength="-1" pattern="&quot;yyyy-MM-dd HH:mm:ss&quot;"
+        precision="0" talendType="id_Date" type=""/>
+    <column comment="" default="" key="false" label="pid" length="20"
+        nullable="true" originalDbColumnName="pid" originalLength="-1"
+        pattern="null" precision="0" talendType="id_String" type=""/>
+    <column comment="" default="" key="false" label="father_pid"
+        length="20" nullable="true" originalDbColumnName="father_pid"
+        originalLength="-1" pattern="null" precision="0"
+        talendType="id_String" type=""/>
+    <column comment="" default="" key="false" label="root_pid"
+        length="20" nullable="true" originalDbColumnName="root_pid"
+        originalLength="-1" pattern="null" precision="0"
+        talendType="id_String" type=""/>
+    <column comment="" default="" key="false" label="system_pid"
+        length="8" nullable="true" originalDbColumnName="system_pid"
+        originalLength="-1" pattern="null" precision="0"
+        talendType="id_Long" type=""/>
+    <column comment="" default="" key="false" label="project"
+        length="50" nullable="true" originalDbColumnName="project"
+        originalLength="-1" pattern="null" precision="0"
+        talendType="id_String" type=""/>
+    <column comment="" default="" key="false" label="job" length="255"
+        nullable="true" originalDbColumnName="job" originalLength="-1"
+        pattern="null" precision="0" talendType="id_String" type=""/>
+    <column comment="" default="" key="false" label="job_repository_id"
+        length="255" nullable="true"
+        originalDbColumnName="job_repository_id" originalLength="-1"
+        pattern="null" precision="0" talendType="id_String" type=""/>
+    <column comment="" default="" key="false" label="job_version"
+        length="255" nullable="true" originalDbColumnName="job_version"
+        originalLength="-1" pattern="null" precision="0"
+        talendType="id_String" type=""/>
+    <column comment="" default="" key="false" label="context"
+        length="50" nullable="true" originalDbColumnName="context"
+        originalLength="-1" pattern="null" precision="0"
+        talendType="id_String" type=""/>
+    <column comment="" default="" key="false" label="origin"
+        length="255" nullable="true" originalDbColumnName="origin"
+        originalLength="-1" pattern="null" precision="0"
+        talendType="id_String" type=""/>
+    <column comment="" default="" key="false" label="message_type"
+        length="255" nullable="true" originalDbColumnName="message_type"
+        originalLength="-1" pattern="null" precision="0"
+        talendType="id_String" type=""/>
+    <column comment="" default="" key="false" label="message"
+        length="255" nullable="true" originalDbColumnName="message"
+        originalLength="-1" pattern="null" precision="0"
+        talendType="id_String" type=""/>
+    <column comment="" default="" key="false" label="duration"
+        length="8" nullable="true" originalDbColumnName="duration"
+        originalLength="-1" pattern="null" precision="0"
+        talendType="id_Long" type=""/>
+</schema>

@@ -1,0 +1,13 @@
+<div class="row">
+  <div class="col-xs-12">
+    <blockquote>
+      <h4>APPLICATION DATA NOT FOUND</h4>
+      <small>Application data is not found,Details should be added/mapped in the reference data screen to view the barrier informations</small>
+    </blockquote>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12">
+      <div style="margin-left:20px" *ngIf="isSuperUser"><a [routerLinkActive]="['active']" [routerLink]="['/home/reference-data']"><i class="fa fa-database fa-fw"></i>Click this link to create the Reference Data</a></div>
+  </div>
+</div>

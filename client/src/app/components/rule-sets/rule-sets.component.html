@@ -1,0 +1,38 @@
+<div class="row">
+  <div class="col-xs-12">
+    <blockquote>
+      <h4>RULE SET MANAGEMENT</h4>
+      <small>Here you can view and amend the rule sets used to calculate RAG status at asset and facility level</small>
+    </blockquote>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xs-12">
+    <ol class="breadcrumb">
+      <li><a [routerLink]="['/']">HOME</a></li>
+      <li class="active">RULE SET MANAGEMENT</li>
+    </ol>
+  </div>
+</div>
+<div class="row" >
+  <div class="col-xs-12">
+    <ul class="nav nav-pills" role="tablist">
+      <li role="presentation" [routerLinkActive]="['active']"><a [routerLink]="['asset']">Asset</a></li>
+      <li role="presentation" [routerLinkActive]="['active']"><a [routerLink]="['facility']">Facility</a></li>
+    </ul>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12">
+    <div class="tab-content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-xs-12">
+            <router-outlet></router-outlet>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

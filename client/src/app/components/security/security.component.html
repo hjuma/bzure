@@ -1,0 +1,49 @@
+<div class="row">
+  <div class="col-xs-12">
+    <blockquote>
+      <h4>SECURITY DASHBOARD</h4>
+      <small>Here you can see the status of the exisitng user in the application. You can add the new user and edit the existing users</small>
+    </blockquote>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12">
+    <ol class="breadcrumb">
+      <li><a [routerLink]="['/']">HOME</a></li>
+      <li class="active">USER ACCESS MANAGEMENT</li>
+    </ol>
+  </div>
+</div>
+
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th><a [routerLink]="['/home/security/add-user']"><i class="fa fa-plus-circle"></i></a></th>
+    <th>User Name</th>
+    <th>First Name</th>
+    <th>Last Name</th>
+    <th>Email</th>
+    <th>Business Unit</th>
+    <th>Role</th>
+    <th>Active</th>
+    <th>Created</th>
+    <th>Updated</th>
+  </tr>
+  </thead>
+  <tbody>
+  <ng-container *ngFor="let user of users; let i = index;">
+    <tr>
+      <td><a [routerLink]="['/home/security/edit-user', user.id]"> <span class="vertical-align fa fa-pencil icon-spacing"></span></a></td>
+      <td>{{user.username}}</td>
+      <td>{{user.first_name}}</td>
+      <td>{{user.last_name}}</td>
+      <td>{{user.email}}</td>
+      <td>{{user.BusinessUnit.name}}</td>
+      <td>{{user.Role.name}}</td>
+      <td>{{user.status}}</td>
+      <td>{{user.created_at | date: 'y-MM-dd HH:mm:ss'}}</td>
+      <td>{{user.updated_at | date: 'y-MM-dd HH:mm:ss'}}</td>
+    </tr>
+  </ng-container>
+  </tbody>
+</table>

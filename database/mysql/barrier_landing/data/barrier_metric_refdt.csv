@@ -1,0 +1,6 @@
+id;barrier_element_id;name;display_order;created_at;updated_at
+-1;1;Incorrect Assignment;5;2017-09-20 13:46:12;2017-09-20 13:46:13
+1;1;Deferred Reactive;1;2017-09-20 13:46:12;2017-09-20 13:46:13
+2;1;Deferred Preventative;2;2017-09-20 13:46:31;2017-09-20 13:46:33
+3;1;Backlog Reactive;3;2017-09-20 13:46:56;2017-09-20 13:46:58
+4;1;Backlog Preventative;4;2017-09-20 13:47:14;2017-09-20 13:47:16

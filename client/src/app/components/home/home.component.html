@@ -1,0 +1,17 @@
+<app-side-nav [@slideInOut]="menuState"></app-side-nav>
+<div [@slideContent]="menuState">
+<nav class="navbar navbar-default navbar-static-top" role="navigation">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" (click)="toggleMenu()">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="fa fa-ellipsis-v"></span>
+      </button>
+      <a class="navbar-brand" [routerLink]="['/']">Hardware Barrier Model</a>
+    </div>
+  </div>
+</nav>
+<div class="container-fluid">
+  <router-outlet></router-outlet>
+</div>
+</div>

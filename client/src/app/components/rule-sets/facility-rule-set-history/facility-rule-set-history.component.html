@@ -1,0 +1,53 @@
+<div class="row">
+  <div class="col-xs-12">
+    <blockquote>
+      <h4>FACILITY RULE HISTORY</h4>
+      <small>Here you can see the change history the selected facility level rule</small>
+    </blockquote>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xs-12">
+    <ol class="breadcrumb">
+      <li><a [routerLink]="['/']">HOME</a></li>
+      <li><a [routerLink]="['/home/rule-sets/facility']">FACILITY RULE SET MANAGEMENT</a></li>
+      <li *ngIf="ruleHistory" class="active">{{ barrierName | uppercase}} / {{barrierMetricName | uppercase}}</li>
+    </ol>
+  </div>
+</div>
+
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th>Version</th>
+    <th>Amber Start</th>
+    <th>Amber End</th>
+    <th>Updated By</th>
+    <th>Update Comments</th>
+    <th>Valid From</th>
+    <th>Valid To</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngIf="activeRuleSet" class="success">
+    <td><strong>{{ activeRuleSet.version}}</strong></td>
+    <td><strong>{{ activeRuleSet.amber_start }}</strong></td>
+    <td><strong>{{ activeRuleSet.amber_end }}</strong></td>
+    <td><strong>{{ activeRuleSet.updated_by }} on {{ activeRuleSet.start_dt | date: 'y-MM-dd HH:mm:ss' }}</strong></td>
+    <td><strong>{{ activeRuleSet.update_comment }}</strong></td>
+    <td><strong>{{ activeRuleSet.start_dt | date: 'y-MM-dd HH:mm:ss'}}</strong></td>
+    <td><strong>{{ activeRuleSet.end_dt | date: 'y-MM-dd HH:mm:ss'}}</strong></td>
+  </tr>
+  <tr *ngFor="let rule of ruleHistory; let i = index;">
+    <td>{{ rule.version }}</td>
+    <td>{{ rule.amber_start }}</td>
+    <td>{{ rule.amber_end }}</td>
+    <td>{{ rule.updated_by }} on {{ rule.start_dt | date: 'y-MM-dd HH:mm:ss' }}</td>
+    <td>{{ rule.update_comment }}</td>
+    <td>{{ rule.start_dt | date: 'y-MM-dd HH:mm:ss'}}</td>
+    <td>{{ rule.end_dt | date: 'y-MM-dd HH:mm:ss'}}</td>
+
+  </tr>
+  </tbody>
+</table>

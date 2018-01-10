@@ -1,0 +1,4 @@
+id;business_unit_id;role_id;first_name;last_name;username;email;password;salt;last_login;status;created_at;updated_at
+1;1;3;Super;User;superuser;dewifelstead@btinternet.com;5ad2f9e87c344ea8873b848f6ccc9dcab4829df5;f79b6d731bea8caae4a8b1b9d8970875d77cb194f99c816c244a9b7b2f2f8c05;2017-10-10 11:11:04;active;2017-09-29 10:26:25;2017-10-10 11:11:04
+2;1;2;Data;User;datauser;dewifelstead@btinternet.com;e09c5d3b3f5c471603b0809a25bea76be6cbe197;728ee4843c015724d71e468b32412ee39cf15543153467c38f9818a463acef0f;;active;2017-09-29 10:26:25;2017-09-29 10:26:25
+3;1;1;Standard;User;standarduser;dxxxxewifelstead@btinternet.com;d7dd241731cfd861b2b70ed9f3cb45b77a420629;78dc3a7dec9a8a0047dc2e0c1794c83e357a71cfeb3b12079f94bc34eabe37ea;;active;2017-09-29 10:26:25;2017-09-29 10:26:25
